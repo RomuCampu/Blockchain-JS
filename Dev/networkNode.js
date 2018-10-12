@@ -115,6 +115,20 @@ app.post('/register-node', function (req, res) {
   });
 });
 
+// register multiple nodes at once
+app.post('/register-nodes-bulk', function (req, res) {
+  const allNetworkNodes = req.body.allNetworkNodes;
+  allNetworkNodes.forEach(networkNodeUrl => {
+    const nodeNotAlreadyPresent = beblock.networkNodes.indexOf(networkNodeUrl) == -1;
+    const notCurrentNode = beblock.currentNodeUrl !== networkNodeUrl;
+    if (nodeNotAlreadyPresent && notCurrentNode) beblock.networkNodes.push(networkNodeUrl);
+  });
+
+  res.json({
+    note: 'Bulk registration successful.'
+  });
+});
+
 
 
 app.listen(port, function () {
