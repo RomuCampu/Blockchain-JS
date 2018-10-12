@@ -2,30 +2,25 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const Blockchain = require('./blockchain');
-// Creates a new and unique ID
 const uuid = require('uuid/v1');
 const port = process.argv[2];
 const rp = require('request-promise');
-
-
-const nodeAddress = uuid()
-  .split('-')
-  .join('');
-
+const nodeAddress = uuid().split('-').join('');
 const beblock = new Blockchain();
 
 app.use(bodyParser.json());
-
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 );
 
+// GET THE BLOCKCHAIN //
 app.get('/blockchain', function (req, res) {
   res.send(beblock);
 });
 
+// CREATE A NEW TRANSACTION // 
 app.post('/transaction', function (req, res) {
   const blockIndex = beblock.createNewTransaction(
     req.body.amount,
@@ -37,6 +32,7 @@ app.post('/transaction', function (req, res) {
   });
 });
 
+// MINE A BLOCK //
 app.get('/mine', function (req, res) {
   const lastBlock = beblock.getLastBlock();
   const previousBlockHash = lastBlock['hash'];
@@ -115,7 +111,7 @@ app.post('/register-node', function (req, res) {
   });
 });
 
-// register multiple nodes at once
+// Register multiple nodes at once
 app.post('/register-nodes-bulk', function (req, res) {
   const allNetworkNodes = req.body.allNetworkNodes;
   allNetworkNodes.forEach(networkNodeUrl => {
