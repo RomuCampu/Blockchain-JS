@@ -1,7 +1,7 @@
 const sha256 = require('sha256');
 const currentNodeUrl = process.argv[3];
 const uuid = require('uuid/v1');
-// Merge test //
+
 function Blockchain() {
     this.chain = [];
     this.pendingTransactions = [];
