@@ -104,6 +104,16 @@ app.post('/register-and-broadcast-node', function (req, res) {
   });
 });
 
+// Register a node with the network
+app.post('/register-node', function (req, res) {
+  const newNodeUrl = req.body.newNodeUrl;
+  const nodeNotAlReadyPresent = beblock.networkNodes.indexOf(newNodeUrl) === -1;
+  const notCurrentNode = beblock.currentNodeUrl !== newNodeUrl;
+  if (nodeNotAlReadyPresent && notCurrentNode) beblock.networkNodes.push(newNodeUrl);
+  res.json({
+    note: 'New node registered with the network'
+  });
+});
 
 
 
