@@ -274,3 +274,13 @@ app.get('/block/:blockHash', function (req, res) {
 		block: correctBlock
 	});
 });
+
+// GET TRANSACTION BY ID //
+app.get('/transaction/:transactionId', function (req, res) {
+  const transactionId = req.params.transactionId;
+  const trasactionData = bitcoin.getTransaction(transactionId);
+  res.json({
+    transaction: trasactionData.transaction,
+    block: trasactionData.block
+  });
+});
